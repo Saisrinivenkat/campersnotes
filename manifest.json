@@ -19,7 +19,7 @@
       "js":[
         "contents/index.js"
       ],
-      "css":["contents/window.css"]
+      "css":["contents/window.css","contents/sty.css"]
     }
   ],
   "icons": {
@@ -38,5 +38,11 @@
       },
       "description": "Opens popup/welcome.html"
     }
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [ "editor/index.html" ],
+      "matches": [ "https://*.youtube.com/*" ]
+    }
+  ]
 }

@@ -49,7 +49,7 @@ function clickShot(){
 
 	
 
-  showImage(canvas);
+  
   // canvas.toBlob(async function (blob) {
 	// 	await navigator.clipboard.write([
   //     new ClipboardItem({
@@ -61,17 +61,92 @@ function clickShot(){
   //   downloadImg.href = URL.createObjectURL(blob);
 	// 	downloadImg.click();
   // }, 'image/png');
-
+  splitFrame();
   
 }
 
+function addScreen(element) {
+  let modalElt = document.createElement("div");
+  modalElt.classList.add("modal");
+  modalElt.setAttribute("id", "myModal");
 
+  let modalContent = document.createElement("div");
+  modalContent.classList.add("modal-content");
+
+  // let closeButton = document.createElement("span");
+  // closeButton.classList.add("close");
+  // closeButton.innerHTML = "&times;";
+
+  // modalContent.appendChild(closeButton);
+  modalElt.appendChild(modalContent);
+
+  element.appendChild(modalElt);
+}
+
+function clearScreen(element) {
+  let vid = document.getElementById("my-video-frame");
+  vid.remove();
+}
+
+function splitFrame() {
+  addScreen(document.body);
+
+  let video = document.getElementsByClassName("video-stream")[0];
+  video.pause();
+
+  // Get the modal
+  let modal = document.getElementById("myModal");
+
+  // Get the button that opens the modal
+  let btn = document.getElementById("myBtn");
+
+  // Get the <span> element that closes the modal
+  let span = document.getElementsByClassName("close")[0];
+
+  let modalContent = document.getElementsByClassName("modal-content")[0];
+
+
+    let videoId = window.location.href.split("=")[1];
+
+    let currentTime =
+      document.getElementsByClassName("video-stream")[0].currentTime;
+    currentTime = Math.floor(currentTime);
+
+    let iframeElt = document.createElement("iframe");
+    iframeElt.src = `https://www.youtube.com/embed/${videoId}?start=${currentTime}&autoplay=1&showinfo=0&rel=0&fs=0&autohide=0`;
+    iframeElt.width = 560;
+    iframeElt.height = 315;
+    iframeElt.frameborder = 0;
+    iframeElt.setAttribute("id", "my-video-frame");
+    modalContent.appendChild(iframeElt);
+
+    modal.style.display = "block";
+
+    const pageurl = chrome.runtime.getURL("editor/index.html");
+
+    console.log(pageurl)
+
+    console.log(pageurl);
+    let mframe = document.createElement("iframe");
+    mframe.width = "100%";
+    mframe.height = "100%";
+    mframe.name = "myframe";
+    mframe.src =  pageurl;
+    mframe.setAttribute("id", "my-frame");
+    modalContent.appendChild(mframe);
+
+    
+
+}
 function showImage(canvas) {
   // Grayed out section.
   var grayed = document.createElement("div");
   grayed.setAttribute("style", "z-index: 2000000000; position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; background-color: black; backdrop-filter: blur(5px);");
   grayed.style.opacity = 0;
-  document.body.parentNode.appendChild(grayed);
+
+  var wrapper = document.querySelector("#info").parentNode;
+
+  wrapper.insertBeforegrayed,(wrapper);
 
   // Image to display.
   var displayCanvas = document.createElement("canvas");
